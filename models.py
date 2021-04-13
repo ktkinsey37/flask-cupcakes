@@ -33,27 +33,21 @@ class Cupcake(db.Model):
 
     rating = db.Column(db.Float, nullable=False)
 
-    photo_url = db.Column(db.String, nullable=False, default=default_image_url)
+    image = db.Column(db.String, nullable=False, default=default_image_url)
 
-
+    def serialize_cupcake(self):
+        return {
+            'id': self.id,
+            'flavor': self.flavor,
+            'size': self.size,
+            'rating': self.rating,
+            'image': self.image}
 
 class AddCupcakeForm(FlaskForm):
     """Form for adding cupcakes."""
 
-    name = StringField("Pet Name")
-    species = SelectField('Species',
-  choices=[('Cat', 'Cat'), ('Dog', 'Dog'), ('Porcupine', 'Porcupine')]
-)
-    photo_url = URLField("URL to Pet's Picture",
+    flavor = StringField("Cupcake Flavor")
+    size  = StringField('Size')
+    rating = FloatField("Rating")
+    image = URLField("URL to image",
                         validators=[URL(), Optional()])
-    age = IntegerField("Pet's Age in Years",
-                        validators=[NumberRange(0,30)])
-    notes = StringField("Any Addition Notes for Pet")
-
-class EditPetForm(FlaskForm):
-    """Form for editing pets."""
-
-    photo_url = URLField("URL to Pet's Picture",
-                        validators=[URL(), Optional()])
-    notes = StringField("Any Additional Notes for Pet")
-    available = BooleanField("Is this pet still available for adoption?")
